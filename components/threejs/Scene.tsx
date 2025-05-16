@@ -132,21 +132,37 @@ function Starfield() {
     );
 }
 
+function CloudAnimation({ children, speed = 1 }: { children: React.ReactNode, speed?: number }) {
+    const groupRef = useRef<THREE.Group>(null);
+
+    useFrame(({ clock }) => {
+        if (!groupRef.current) return;
+        groupRef.current.position.y = Math.sin(clock.getElapsedTime() * speed) * 0.3;
+    });
+
+    return <group ref={groupRef}>{children}</group>;
+}
+
 function AtmosphericBackground() {
     return (
         <>
-            <Cloud
-                opacity={0.5}
-                speed={0.4}
-                segments={20}
-                position={[0, 2, -10]}
-            />
-            <Cloud
-                opacity={0.3}
-                speed={0.3}
-                segments={20}
-                position={[-4, -2, -8]}
-            />
+            <CloudAnimation speed={0.4}>
+                <Cloud
+                    opacity={0.5}
+                    speed={0.4}
+                    segments={20}
+                    position={[0, -2, -10]}
+                />
+            </CloudAnimation>
+
+            <CloudAnimation speed={0.3}>
+                <Cloud
+                    opacity={0.3}
+                    speed={0.3}
+                    segments={20}
+                    position={[-4, -4, -8]}
+                />
+            </CloudAnimation>
 
             <Sparkles
                 count={100}
@@ -173,7 +189,7 @@ function AtmosphericBackground() {
     );
 }
 
-export default function App() {
+export default function App({ children }: { children: React.ReactNode }) {
     return (
         <div className="h-screen w-screen bg-gradient-to-b from-black via-orange-950/30 to-black relative overflow-hidden">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iLjA1Ii8+PC9zdmc+')] opacity-50 mix-blend-overlay"></div>
@@ -191,67 +207,7 @@ export default function App() {
                 />
             </Canvas>
 
-            <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center z-10">
-                <div className="text-center max-w-4xl px-4">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 animate-gradient">
-                        The First MEV-Protected DEX on Bitcoin
-                    </h1>
-                    <p className="text-lg md:text-2xl mb-8 text-orange-100/80">
-                        Trade with confidence on Bitcoin&apos;s most secure decentralized exchange
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-3xl mx-auto">
-                        <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-orange-500/20">
-                            <div className="text-orange-500 text-xl mb-2">🛡️ MEV Protection</div>
-                            <p className="text-gray-300">
-                                Advanced order routing and privacy features prevent frontrunning and sandwich attacks
-                            </p>
-                        </div>
-                        <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-orange-500/20">
-                            <div className="text-orange-500 text-xl mb-2">⚡ Native Bitcoin</div>
-                            <p className="text-gray-300">
-                                Built directly on Bitcoin&apos;s network for maximum security and true decentralization
-                            </p>
-                        </div>
-                        <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-orange-500/20">
-                            <div className="text-orange-500 text-xl mb-2">🔒 Non-Custodial</div>
-                            <p className="text-gray-300">
-                                Maintain full control of your assets with secure wallet integration
-                            </p>
-                        </div>
-                        <div className="bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-orange-500/20">
-                            <div className="text-orange-500 text-xl mb-2">💰 Zero Value Extracted</div>
-                            <p className="text-gray-300">
-                                Fair trading environment where your trades execute at the best possible price
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <button className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg font-bold text-black hover:opacity-90 transition-opacity">
-                            Start Trading
-                        </button>
-                        <button className="px-8 py-4 border-2 border-orange-500 rounded-lg font-bold hover:bg-orange-500/20 transition-colors">
-                            Learn About MEV Protection
-                        </button>
-                    </div>
-
-                    <div className="mt-12 flex flex-wrap justify-center gap-8">
-                        <div className="bg-black/40 backdrop-blur-sm px-6 py-3 rounded-full">
-                            <span className="text-orange-500 font-bold">Protected Volume:</span>
-                            <span className="ml-2">$1.2B+</span>
-                        </div>
-                        <div className="bg-black/40 backdrop-blur-sm px-6 py-3 rounded-full">
-                            <span className="text-orange-500 font-bold">MEV Attacks Prevented:</span>
-                            <span className="ml-2">50K+</span>
-                        </div>
-                        <div className="bg-black/40 backdrop-blur-sm px-6 py-3 rounded-full">
-                            <span className="text-orange-500 font-bold">Savings for Traders:</span>
-                            <span className="ml-2">$8.5M+</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {children}
 
             <div className="absolute top-1/4 -left-32 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
             <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-yellow-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>

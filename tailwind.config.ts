@@ -8,6 +8,9 @@ const config = {
     'app/**/*.{ts,tsx}',
     'components/**/*.{ts,tsx}',
     '../../packages/ui/src/components/**/*.{ts,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -20,9 +23,44 @@ const config = {
           '0%': { transform: 'translateY(0%)' },
           '100%': { transform: 'translateY(-93.33%)' },
         },
+        'gradient-xy': {
+          '0%, 100%': {
+            'background-size': '400% 400%',
+            'background-position': 'left center',
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center',
+          },
+        },
+        'button-glow': {
+          '0%': {
+            opacity: '0.9',
+            'box-shadow': '0 0 15px rgba(255,140,0,0)',
+          },
+          '50%': {
+            opacity: '1',
+            'box-shadow': '0 0 30px rgba(255,140,0,0.6)',
+          },
+          '100%': {
+            opacity: '0.9',
+            'box-shadow': '0 0 15px rgba(255,140,0,0)',
+          },
+        },
+        'spin-slow': {
+          from: {
+            transform: 'rotate(0deg)',
+          },
+          to: {
+            transform: 'rotate(360deg)',
+          },
+        },
       },
       animation: {
         sprite: 'spriteAnimation 1s steps(15) infinite',
+        'gradient-xy': 'gradient-xy 10s ease infinite',
+        'button-glow': 'button-glow 1.5s ease-in-out',
+        'spin-slow': 'spin-slow 3s linear infinite',
       },
       colors: {
         primary: {

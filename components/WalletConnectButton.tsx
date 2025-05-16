@@ -1,26 +1,29 @@
 'use client'
 
+import { cn } from '@/lib/utils'
 import {
+  type LEATHER,
   MAGIC_EDEN,
   type OKX,
+  type OP_NET,
+  type ORANGE,
   type OYL,
   type PHANTOM,
-  type UNISAT,
-  type WIZZ,
-  type XVERSE,
-  type LEATHER,
-  type ORANGE,
-  useLaserEyes,
-  type OP_NET,
   type ProviderType,
-  SPARROW,
+  type UNISAT,
+  useLaserEyes,
   WalletIcon,
+  type WIZZ,
+  type XVERSE
 } from '@omnisat/lasereyes'
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
-import { ImNewTab } from 'react-icons/im'
 import Link from 'next/link'
-import clsx from 'clsx'
+import { ImNewTab } from 'react-icons/im'
+import { toast } from 'sonner'
+
+const baseButtonStyles = "relative flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300"
+const downloadButtonStyles = "bg-black/40 border border-orange-500/20 text-orange-500/90 hover:bg-orange-500/10 hover:border-orange-500/40"
+const connectedButtonStyles = "bg-orange-500/10 border border-orange-500/30 text-orange-500 hover:bg-orange-500/20"
+const connectButtonStyles = "bg-gradient-to-r from-orange-500 to-yellow-500 text-black hover:shadow-[0_0_20px_rgba(255,140,0,0.2)] active:scale-[0.98]"
 
 const WalletConnectButton = ({
   wallet,
@@ -31,7 +34,6 @@ const WalletConnectButton = ({
   }
 }) => {
   const walletName = wallet.name
-  console.log("walletName", walletName);
   const {
     connect,
     disconnect,
@@ -65,8 +67,6 @@ const WalletConnectButton = ({
 
   const isConnected = provider === walletName
   const isMissingWallet = !hasWallet[walletName]
-
-  const isSparrow = wallet.name === SPARROW
 
   const connectWallet = async (
     walletName:
@@ -103,60 +103,44 @@ const WalletConnectButton = ({
     | typeof WIZZ
     | typeof ORANGE
 
-  const buttonClass =
-    'text-xl bg-primary flex flex-row gap-2 border border-[#3c393f] bg-[#1e1d1f] hover:bg-[#3c393f] hover:text-white hover:border-black'
-
   if (isMissingWallet) {
     return (
-      <Link href={wallet.url} target="_blank">
-        <Button
-          onClick={() => connectWallet(walletName as WalletProvders)}
-          className={clsx(buttonClass, 'text-md opacity-50 hover:opacity-100')}
-          variant="outline"
-          size="lg"
+      <Link href={wallet.url} target="_blank" className="group">
+        <button
+          className={cn(baseButtonStyles, downloadButtonStyles, "group-hover:opacity-100 opacity-70")}
         >
-          <WalletIcon walletName={wallet.name} size={24} /> Download{' '}
-          {wallet.name}
-          <ImNewTab />
-        </Button>
+          <WalletIcon walletName={wallet.name} size={20} />
+          <span>Download {wallet.name}</span>
+          <ImNewTab className="w-3 h-3 opacity-70" />
+        </button>
       </Link>
     )
   }
 
   const disconnectWallet = () => {
-    // @ts-ignore
     disconnect()
   }
 
   if (isConnected) {
     return (
-      <Button
+      <button
         onClick={disconnectWallet}
-        className={clsx(
-          buttonClass,
-          'text-md text-primary-500 border-primary-500 hover:bg-primary-500 hover:border-primary-500'
-        )}
-        variant="outline"
-        size="lg"
+        className={cn(baseButtonStyles, connectedButtonStyles)}
       >
-        {provider && <WalletIcon walletName={wallet.name} size={24} />}{' '}
-        Disconnect {wallet.name}
-      </Button>
+        <WalletIcon walletName={wallet.name} size={20} />
+        <span>Disconnect {wallet.name}</span>
+      </button>
     )
   }
 
-
-
   return (
-    <Button
+    <button
       onClick={() => connectWallet(walletName as WalletProvders)}
-      className={buttonClass}
-      variant="outline"
-      size="lg"
+      className={cn(baseButtonStyles, connectButtonStyles)}
     >
-      <WalletIcon walletName={wallet.name} size={24} />
-      {wallet.name}
-    </Button>
+      <WalletIcon walletName={wallet.name} size={20} />
+      <span>Connect to {wallet.name}</span>
+    </button>
   )
 }
 

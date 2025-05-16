@@ -1,9 +1,10 @@
+import { Metadata } from 'next'
 import './globals.css'
 
 import { cn } from '@/lib/utils'
+import localFont from 'next/font/local'
 import { ReactNode } from 'react'
 import { Toaster } from 'sonner'
-import localFont from 'next/font/local'
 
 const windows = localFont({
   src: './Windows_Regular.ttf',
@@ -14,6 +15,12 @@ const pxplus = localFont({
   src: './PxPlus_IBM_VGA8.ttf',
   variable: '--font-pxplus',
 })
+
+export const metadata: Metadata = {
+  title: 'Bit credit',
+  description: 'Bit credit',
+  themeColor: '#000000',
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
