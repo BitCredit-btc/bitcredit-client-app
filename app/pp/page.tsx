@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 
-const BitcoinScene = dynamic(() => import('./BitcoinScene'), {
+const BitcoinScene = dynamic(() => import('../../components/threejs/BitcoinScene'), {
     ssr: false,
 });
 
